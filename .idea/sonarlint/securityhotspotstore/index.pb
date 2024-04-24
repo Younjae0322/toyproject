@@ -57,3 +57,5 @@ Otoyproject/src/test/java/com/example/toyproject/ToyprojectApplicationTests.java
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 W
 '.idea/modules/toyproject.toyproject.iml,7\d\7db61214e7ea69bcbbcb82a12cd6bad756d4dec4
+~
+Ntoyproject/src/main/java/com/example/toyproject/response/UserListResponse.java,d\5\d5a1eb60766004219bd87d17fc6fbb8f2ebcafd4
