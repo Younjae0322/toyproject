@@ -1,10 +1,13 @@
 package com.example.toyproject.controllerTest;
 
+import com.example.toyproject.controller.UserController;
+import com.example.toyproject.domain.User;
 import com.example.toyproject.dto.UserDto;
 import com.example.toyproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,11 +20,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
@@ -31,9 +36,12 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+
+    // UserService를 @MockBean으로 주입
     //@MockBean
+    @Autowired
     private UserService userService;
+
 
     @Test
     @Transactional
@@ -62,14 +70,13 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("회원 가입이 완료되었습니다."));
 
     }
-
     @Test
-    // Transactional 주석 해제 후 데이터 삽입.
     @Transactional
-    @DisplayName("페이징 처리 후 이름순 정렬 출력")
-    void testGetUserList() throws Exception {
-        /*// 50개의 사용자 데이터를 추가
-        IntStream.rangeClosed(1, 20).forEach(i -> {
+    @DisplayName("데이터 삽입 테스트")
+    void addUser() throws Exception {
+
+        // 50개의 사용자 데이터를 추가
+        IntStream.rangeClosed(1, 50).forEach(i -> {
             UserDto userDto = new UserDto();
             userDto.setPassword("password" + i);
             userDto.setNickname("nickname" + i);
@@ -77,7 +84,14 @@ class UserControllerTest {
             userDto.setPhoneNumber("phoneNumber" + i);
             userDto.setAddress("address" + i);
             userService.saveUser(userDto);
-        });*/
+        });
+
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("페이징 처리 후 이름순 정렬 출력")
+    void testGetUserList() throws Exception {
 
         // 사용자 목록 조회 테스트
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/list")
@@ -94,6 +108,33 @@ class UserControllerTest {
                 // 이하 추가적인 필드에 대한 검증을 수행할 수 있습니다.
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userList").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userList.length()").value(10)); // 페이지당 10개씩 조회하므로 예상되는 사용자 목록의 길이는 10입니다.
+    }
+
+
+    @Test
+    @Transactional
+    @DisplayName("사용자 정보 수정 테스트")
+    void testUpdateUser() throws Exception {
+        // Given
+        int userId = 41;
+        UserDto updatedUserDto = new UserDto();
+        //updatedUserDto.setId(userId);
+        updatedUserDto.setPassword("newPassword1");
+        updatedUserDto.setNickname("newNickname");
+        updatedUserDto.setName("newName");
+        updatedUserDto.setPhoneNumber("newPhoneNumber");
+        updatedUserDto.setAddress("newAddress");
+
+        // Perform the PUT request
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/user/{userId}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(updatedUserDto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                // mockMvc에 대한 결과 호출
+                .andDo(print());
+
+        // Then
+        assertThat(userService.isUserUpdated()).isTrue();
     }
 
 

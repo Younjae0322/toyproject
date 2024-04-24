@@ -59,3 +59,5 @@ W
 '.idea/modules/toyproject.toyproject.iml,7\d\7db61214e7ea69bcbbcb82a12cd6bad756d4dec4
 ~
 Ntoyproject/src/main/java/com/example/toyproject/response/UserListResponse.java,d\5\d5a1eb60766004219bd87d17fc6fbb8f2ebcafd4
+€
+Ptoyproject/src/main/java/com/example/toyproject/exception/NotFoundException.java,3\d\3d2654fee5566169ab3adfa7b2ec8db8af6968b8

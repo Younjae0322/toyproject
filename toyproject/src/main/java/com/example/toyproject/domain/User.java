@@ -34,13 +34,12 @@ public class User {
     }
 
     public static User createUser(UserDto userDto){
-        User user = User.builder()
+        return User.builder()
                 .password(userDto.getPassword())
                 .nickname(userDto.getNickname())
                 .name(userDto.getName())
                 .phoneNumber(userDto.getPhoneNumber())
                 .address(userDto.getAddress())
                 .build();
-        return user;
     }
 }
