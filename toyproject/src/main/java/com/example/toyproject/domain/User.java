@@ -12,10 +12,13 @@ import javax.persistence.*;
 @ToString
 @Entity
 @AllArgsConstructor
+// ORM구조로 데이터베이스에 Table생성을 담당.
 public class User {
 
-    @Id
+    @Id // primary key
+    // auto increment 자동 증가값 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private int id;
 
     private String password;
@@ -24,7 +27,8 @@ public class User {
     private String phoneNumber;
     private String address;
 
-
+    
+    // test case에서 데이터 수정 , 현재는 사용하지 않는 메소드
     public void updateUser(UserDto userDto){
         this.nickname = userDto.getNickname();
         this.password = userDto.getPassword();

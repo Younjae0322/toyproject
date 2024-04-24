@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 @Repository
+// JPA를 사용하기 위해 Repository를 상속받음
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 

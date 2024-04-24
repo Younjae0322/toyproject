@@ -29,6 +29,7 @@ public class UserService {
     private boolean userUpdated = false;
     
     // id를 조회해서 회원 정보 확인, id에 정보 없으면 예외출력
+    // 한명만 조회하는 경우에 사용하려고 만듦.
     public User findUser(Integer id){
         Optional<User> optionalUser = userRepository.findById(id);
         return optionalUser.orElseThrow(() -> new NoSuchElementException("해당 "+ id + "회원이 존재하지 않습니다."));}
@@ -46,6 +47,7 @@ public class UserService {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
 
         Pageable pageable = PageRequest.of(page, pageSize, sort);
+        // findAll() 메소드 호출 JPA 라이브러리에서 사용 가능.
         return userRepository.findAll(pageable);
     }
 

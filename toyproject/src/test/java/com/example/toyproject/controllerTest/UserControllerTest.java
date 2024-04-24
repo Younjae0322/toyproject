@@ -38,6 +38,8 @@ class UserControllerTest {
 
 
     // UserService를 @MockBean으로 주입
+    // MockBean 설정 x 실제 Service단 구현 후 실제 데이터베이스로 테스트.
+    // Transactional로 데이터베이스 커밋하지않고 테스트 후 rollback하며 진행.
     //@MockBean
     @Autowired
     private UserService userService;
@@ -71,7 +73,7 @@ class UserControllerTest {
 
     }
     @Test
-    @Transactional
+    //@Transactional
     @DisplayName("데이터 삽입 테스트")
     void addUser() throws Exception {
 
@@ -125,7 +127,7 @@ class UserControllerTest {
         updatedUserDto.setPhoneNumber("newPhoneNumber");
         updatedUserDto.setAddress("newAddress");
 
-        // Perform the PUT request
+
         mockMvc.perform(MockMvcRequestBuilders.put("/api/user/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updatedUserDto)))
